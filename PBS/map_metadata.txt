@@ -103,6 +103,12 @@ MapPosition = 0,14,8
 BattleBack = field
 MapSize = 1,11
 #-------------------------------
+[022]   # Parque dos novatos
+Name = Parque dos novatos
+Outdoor = true
+BattleBack = forest
+Environment = Forest
+#-------------------------------
 [023]   # Lerucean Town
 Name = Lerucean Town
 Outdoor = true

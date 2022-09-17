@@ -19,29 +19,17 @@ class CatchFirstPkmn
     return @inProgress
   end
 
-  def pbGoToStart
-    if $scene.is_a?(Scene_Map)
-      pbFadeOutIn {
-        $game_temp.player_transferring   = true
-        $game_temp.transition_processing = true
-        $game_temp.player_new_direction = 2
-        pbDismountBike
-        $scene.transfer_player
-      }
-    end
-  end
-
   def pbStart()
-    @ballcount  = 10
+    @ballcount  = 1
     @inProgress = true
-    @steps      = 999
+    @steps      = 0
     $game_system.menu_disabled = true
     echoln("Menu disabled")
     pbAddPokemonSilent(:BULBASAUR, 1) #needed pokemon to be able to start safari-like battles.
     # make sure there's only one in the party at start of catch first pkmn map
   end
 
-  def pbEnd()
+  def pbEnd
     @ballcount  = 0
     @captures   = 0
     @inProgress = false
@@ -74,10 +62,7 @@ EventHandlers.add(:on_player_step_taken_can_transfer, :CatchFirstPkmn_game_count
     next if 999 == 0 || pbCatchFirstPkmn.decision != 0
     pbCatchFirstPkmn.steps -= 1
     next if pbCatchFirstPkmn.steps > 0
-    pbMessage(_INTL("PA: Ding-dong!\1"))
-    pbMessage(_INTL("PA: Your CatchFirstPkmn game is over!"))
     pbCatchFirstPkmn.decision = 1
-    pbCatchFirstPkmn.pbGoToStart
     handled[0] = true
   }
 )
@@ -119,10 +104,9 @@ def pbCatchFirstPkmnBattle(species, level)
   pbCatchFirstPkmn.ballcount = battle.ballCount
   if pbCatchFirstPkmn.ballcount <= 0
     if decision != 2   # Last CatchFirstPkmn Ball was used to catch the wild Pokémon
-      pbMessage(_INTL("Announcer: You're out of CatchFirstPkmn Balls! Game over!"))
+      pbMessage(_INTL("Prof Luís: Acabaram suas bolas, volta aqui pra pegar mais!"))
     end
     pbCatchFirstPkmn.decision = 1
-    pbCatchFirstPkmn.pbGoToStart
   end
   # Save the result of the battle in Game Variable 1
   #    0 - Undecided or aborted
@@ -131,7 +115,6 @@ def pbCatchFirstPkmnBattle(species, level)
   #    4 - Wild Pokémon was caught
   if decision == 4
     pbCatchFirstPkmn.captures += 1
-    pbCatchFirstPkmn.pbEnd()
   end
   pbSet(1, decision)
   # Used by the Poké Radar to update/break the chain
