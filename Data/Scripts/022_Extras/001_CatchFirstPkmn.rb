@@ -35,6 +35,7 @@ class CatchFirstPkmn
     @ballcount  = 10
     @inProgress = true
     @steps      = 999
+    $game_system.menu_disabled = true
   end
 
   def pbEnd
@@ -44,6 +45,7 @@ class CatchFirstPkmn
     @steps      = 0
     @decision   = 0
     $game_map.need_refresh = true
+    $game_system.menu_disabled = false
   end
 end
 
@@ -65,7 +67,7 @@ EventHandlers.add(:on_player_step_taken_can_transfer, :CatchFirstPkmn_game_count
     # handled is an array: [nil]. If [true], a transfer has happened because of
     # this event, so don't do anything that might cause another one
     next if handled[0]
-    next if Settings::CatchFirstPkmn_STEPS == 0 || pbCatchFirstPkmn.decision != 0
+    next if 999 == 0 || pbCatchFirstPkmn.decision != 0
     pbCatchFirstPkmn.steps -= 1
     next if pbCatchFirstPkmn.steps > 0
     pbMessage(_INTL("PA: Ding-dong!\1"))
