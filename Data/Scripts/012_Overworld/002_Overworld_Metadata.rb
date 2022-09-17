@@ -26,6 +26,7 @@ class PokemonGlobalMetadata
   attr_accessor :day_care
   # Special battle modes
   attr_accessor :safariState
+  attr_accessor :catchFirstPkmn
   attr_accessor :bugContestState
   attr_accessor :challenge
   attr_accessor :lastbattle      # Saved recording of a battle
@@ -80,6 +81,7 @@ class PokemonGlobalMetadata
     @day_care             = DayCare.new
     # Special battle modes
     @safariState          = nil
+    @catchFirstPkmn       = nil
     @bugContestState      = nil
     @challenge            = nil
     @lastbattle           = nil
