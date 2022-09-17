@@ -311,7 +311,7 @@ class SafariBattle
   #=============================================================================
   # Initialize the battle class
   #=============================================================================
-  def initialize(scene, player, party2)
+  def initialize(scene, player, party2, isSafari = true)
     @scene         = scene
     @peer          = Battle::Peer.new
     @backdrop      = ""
@@ -328,6 +328,8 @@ class SafariBattle
                       Battle::FakeBattler.new(self, 1)]
     @rules         = {}
     @ballCount     = 0
+
+    @isSafari      = isSafari
   end
 
   def disablePokeBalls=(value); end
@@ -443,11 +445,13 @@ class SafariBattle
       weather_data = GameData::BattleWeather.try_get(@weather)
       @scene.pbCommonAnimation(weather_data.animation) if weather_data
       safariBall = GameData::Item.get(:SAFARIBALL).id
-      catch_rate = pkmn.species_data.catch_rate
+      catch_rate =  @isSafari ? pkmn.species_data.catch_rate : rand(150..230)
       catchFactor  = (catch_rate * 100) / 1275
       catchFactor  = [[catchFactor, 3].max, 20].min
       escapeFactor = (pbEscapeRate(catch_rate) * 100) / 1275
       escapeFactor = [[escapeFactor, 2].max, 20].min
+      echoln("catch_rate = #{catch_rate}")
+      echoln("escape_factor = #{escapeFactor}")
       loop do
         cmd = @scene.pbSafariCommandMenu(0)
         case cmd

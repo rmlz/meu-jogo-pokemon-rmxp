@@ -36,9 +36,12 @@ class CatchFirstPkmn
     @inProgress = true
     @steps      = 999
     $game_system.menu_disabled = true
+    echoln("Menu disabled")
+    pbAddPokemonSilent(:BULBASAUR, 1) #needed pokemon to be able to start safari-like battles.
+    # make sure there's only one in the party at start of catch first pkmn map
   end
 
-  def pbEnd
+  def pbEnd()
     @ballcount  = 0
     @captures   = 0
     @inProgress = false
@@ -46,6 +49,7 @@ class CatchFirstPkmn
     @decision   = 0
     $game_map.need_refresh = true
     $game_system.menu_disabled = false
+    $player.remove_pokemon_at_index(0) #remove the first pokemon in the party
   end
 end
 
@@ -100,7 +104,7 @@ def pbCatchFirstPkmnBattle(species, level)
   # Create the battle scene (the visual side of it)
   scene = BattleCreationHelperMethods.create_battle_scene
   # Create the battle class (the mechanics side of it)
-  battle = CatchFirstPkmnBattle.new(scene, playerTrainer, foeParty)
+  battle = SafariBattle.new(scene, playerTrainer, foeParty, false)
   battle.ballCount = pbCatchFirstPkmn.ballcount
   BattleCreationHelperMethods.prepare_battle(battle)
   # Perform the battle itself
@@ -126,9 +130,8 @@ def pbCatchFirstPkmnBattle(species, level)
   #    3 - Player or wild Pokémon ran from battle, or player forfeited the match
   #    4 - Wild Pokémon was caught
   if decision == 4
-    $stats.CatchFirstPkmn_pokemon_caught += 1
     pbCatchFirstPkmn.captures += 1
-    $stats.most_captures_per_CatchFirstPkmn_game = [$stats.most_captures_per_CatchFirstPkmn_game, pbCatchFirstPkmn.captures].max
+    pbCatchFirstPkmn.pbEnd()
   end
   pbSet(1, decision)
   # Used by the Poké Radar to update/break the chain
