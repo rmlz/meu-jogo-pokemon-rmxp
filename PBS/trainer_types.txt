@@ -399,3 +399,8 @@ Gender = Male
 BaseMoney = 100
 BattleBGM = Battle Champion
 VictoryBGM = Battle victory leader
+#-------------------------------
+[RIVAL3]
+Name = Rival
+Gender = Female
+BaseMoney = 16

@@ -108,6 +108,7 @@ Name = Parque dos novatos
 Outdoor = true
 BattleBack = forest
 Environment = Forest
+SafariMap = true
 #-------------------------------
 [023]   # Lerucean Town
 Name = Lerucean Town

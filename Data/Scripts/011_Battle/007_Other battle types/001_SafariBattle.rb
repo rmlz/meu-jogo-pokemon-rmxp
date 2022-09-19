@@ -445,7 +445,11 @@ class SafariBattle
       weather_data = GameData::BattleWeather.try_get(@weather)
       @scene.pbCommonAnimation(weather_data.animation) if weather_data
       safariBall = GameData::Item.get(:SAFARIBALL).id
-      catch_rate =  @isSafari ? pkmn.species_data.catch_rate : rand(150..230)
+      catch_rate = if @isSafari
+                     pkmn.species_data.catch_rate
+                   else
+                     rand < 0.9 ? rand(80..230) : rand(50..80)
+                   end
       catchFactor  = (catch_rate * 100) / 1275
       catchFactor  = [[catchFactor, 3].max, 20].min
       escapeFactor = (pbEscapeRate(catch_rate) * 100) / 1275
@@ -492,7 +496,7 @@ class SafariBattle
         # End of round
         if @decision == 0
           if @ballCount <= 0
-            pbDisplay(_INTL("PA: You have no Safari Balls left! Game over!"))
+            pbDisplay(_INTL("PA: You have no Safari Balls left!"))
             @decision = 2
           elsif pbRandom(100) < 5 * escapeFactor
             pbSEPlay("Battle flee")

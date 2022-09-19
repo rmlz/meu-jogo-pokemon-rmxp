@@ -20,12 +20,12 @@ class CatchFirstPkmn
   end
 
   def pbStart()
-    @ballcount  = 1
+    @ballcount  = 6
     @inProgress = true
     @steps      = 0
     $game_system.menu_disabled = true
     echoln("Menu disabled")
-    pbAddPokemonSilent(:BULBASAUR, 1) #needed pokemon to be able to start safari-like battles.
+    pbAddPokemonSilent(:BULBASAUR, 1, false) #needed pokemon to be able to start safari-like battles.
     # make sure there's only one in the party at start of catch first pkmn map
   end
 
@@ -102,12 +102,6 @@ def pbCatchFirstPkmnBattle(species, level)
   Input.update
   # Update CatchFirstPkmn game data based on result of battle
   pbCatchFirstPkmn.ballcount = battle.ballCount
-  if pbCatchFirstPkmn.ballcount <= 0
-    if decision != 2   # Last CatchFirstPkmn Ball was used to catch the wild Pokémon
-      pbMessage(_INTL("Prof Luís: Acabaram suas bolas, volta aqui pra pegar mais!"))
-    end
-    pbCatchFirstPkmn.decision = 1
-  end
   # Save the result of the battle in Game Variable 1
   #    0 - Undecided or aborted
   #    2 - Player ran out of CatchFirstPkmn Balls
