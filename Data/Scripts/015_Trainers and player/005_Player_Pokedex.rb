@@ -38,7 +38,7 @@ class Player < Trainer
     # Sets the given species as seen in the Pokédex.
     # @param species [Symbol, GameData::Species] species to set as seen
     # @param should_refresh_dexes [Boolean] whether Dex accessibility should be recalculated
-    def set_seen(species, should_refresh_dexes = true)
+    def set_seen(species, should_refresh_dexes = true, value = true)
       species_id = GameData::Species.try_get(species)&.species
       return if species_id.nil?
       @seen[species_id] = true
@@ -144,10 +144,10 @@ class Player < Trainer
     # Sets the given species as owned in the Pokédex.
     # @param species [Symbol, GameData::Species] species to set as owned
     # @param should_refresh_dexes [Boolean] whether Dex accessibility should be recalculated
-    def set_owned(species, should_refresh_dexes = true)
+    def set_owned(species, should_refresh_dexes = true, value = true)
       species_id = GameData::Species.try_get(species)&.species
       return if species_id.nil?
-      @owned[species_id] = true
+      @owned[species_id] = value
       self.refresh_accessible_dexes if should_refresh_dexes
     end
 

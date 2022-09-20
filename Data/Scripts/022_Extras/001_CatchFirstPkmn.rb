@@ -26,6 +26,8 @@ class CatchFirstPkmn
     $game_system.menu_disabled = true
     echoln("Menu disabled")
     pbAddPokemonSilent(:BULBASAUR, 1, false) #needed pokemon to be able to start safari-like battles.
+    $player.pokedex.set_owned(:BULBASAUR, true, false) #takes bulbassaur out of the pokedex
+    $player.pokedex.set_seen(:BULBASAUR, true, false) #takes bulbassaur out of the pokedex
     # make sure there's only one in the party at start of catch first pkmn map
   end
 
